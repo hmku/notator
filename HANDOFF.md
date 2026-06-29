@@ -142,14 +142,36 @@ npm run dev   # http://localhost:3000
 ### Deploy (optional)
 
 - [x] Initialized git repo and committed all work locally
-- [ ] **Create the GitHub repo** (agent couldn't — no `gh`/token). Then push:
-  - Remote is already set to `git@github.com:hmku/notator.git` (SSH auth works as `hmku`)
-  - Create an **empty** repo named `notator` at https://github.com/new (no README/license)
-  - Then run: `git push -u origin main`
-- [ ] Deploy to Vercel (or Netlify/Railway/etc.) — import the GitHub repo
-- [ ] Add same Supabase env vars on host (from `.env.local`)
+- [x] Pushed to GitHub: `git@github.com:hmku/notator.git` (`main` tracks `origin/main`)
+- [ ] Deploy to Vercel (steps below)
 - [ ] Test PWA “Add to Home Screen” on phone
 - [ ] Test offline edit → sync when back online
+
+#### Vercel deploy — step by step
+
+Vercel is like Heroku (push-to-deploy PaaS), but serverless: static pages on a
+CDN + functions that wake per-request. Zero config for Next.js.
+
+1. **Sign in:** go to https://vercel.com → "Continue with GitHub" (use the `hmku` account).
+2. **Import the repo:** Dashboard → **Add New… → Project** → find `hmku/notator` → **Import**.
+   - Vercel auto-detects Next.js. Leave build/output settings at defaults.
+3. **Add environment variables** (before the first deploy — expand "Environment Variables"):
+   Copy these two from your local `.env.local`:
+   - `NEXT_PUBLIC_SUPABASE_URL` = `https://bsqimvsgbdjyisnzwwdh.supabase.co`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = (the anon key in `.env.local`)
+   - Apply to all environments (Production, Preview, Development).
+4. **Deploy:** click **Deploy**. Wait ~1–2 min. You'll get a URL like `https://notator-xxxx.vercel.app`.
+5. **(Recommended) Lock Supabase to your domain:** Supabase dashboard →
+   Authentication → URL Configuration → set **Site URL** to your Vercel URL
+   (and add it to **Redirect URLs**). Prevents auth from accepting other origins.
+6. **Future deploys are automatic:** every `git push` to `main` redeploys.
+
+After deploy, open the Vercel URL on your phone → log in → Share → **Add to Home Screen**
+to install the PWA. Then test offline: airplane mode, edit a note, reconnect, confirm it syncs.
+
+> Note: the `anon` key is *meant* to be public (it's exposed in the browser). Row Level
+> Security (already enabled on the `pieces` table) is what actually protects your data —
+> each user can only read/write their own rows. Never put the `service_role` key in Vercel.
 
 ### Validation not yet done manually
 
