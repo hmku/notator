@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Notator">
+  <rect width="512" height="512" rx="112" fill="#0f1115"/>
+  <rect x="72" y="120" width="368" height="72" rx="20" fill="#7c9cff"/>
+  <rect x="72" y="220" width="280" height="48" rx="16" fill="#222733"/>
+  <rect x="72" y="292" width="320" height="48" rx="16" fill="#222733"/>
+  <rect x="72" y="364" width="240" height="48" rx="16" fill="#222733"/>
+</svg>
